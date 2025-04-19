@@ -1,3 +1,4 @@
+- No previous experience with tailwind or drizzle
 - Discuss if we want UUID (uniqueness) vs serial (size/performance) vs bigserial (more records) vs hybrid approach (sequence + random) for advocate IDs
 - Filter out specialties first (maybe a dropdown)
 - Discuss phone number storage (US vs others) type bigint (performance) vs varchar (set length) vs text
