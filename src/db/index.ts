@@ -1,4 +1,4 @@
-import { drizzle } from "drizzle-orm/postgres-js";
+import { drizzle, PostgresJsDatabase } from "drizzle-orm/postgres-js";
 import postgres from "postgres";
 
 const setup = () => {
@@ -7,6 +7,11 @@ const setup = () => {
     return {
       select: () => ({
         from: () => [],
+      }),
+      insert: () => ({
+        values: () => ({
+          returning: () => [],
+        }),
       }),
     };
   }
