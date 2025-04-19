@@ -1,0 +1,19 @@
+- Discuss if we want UUID (uniqueness) vs serial (size/performance) vs bigserial (more records) vs hybrid approach (sequence + random) for advocate IDs
+- Filter out specialties first (maybe a dropdown)
+- Discuss phone number storage (US vs others) type bigint (performance) vs varchar (set length) vs text
+- Add phone validation
+- Other potential data values
+  - State values
+  - Lat/Lng to find distance away
+    - Link to directions
+  - Images for advocates
+  - Ratings for advocates
+  - More actionable columns
+- Support multiple search terms or things like full name
+- Need to add a debounce on the FE for the search
+- Better UI/UX
+  - Loading
+  - Mobile
+- Work on caching data when/where it makes sense
+- Improve file structure, break more components out where it makes sense
+- Add testing
