@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import { Advocate } from "@/types";
-import { specialtyValues } from "../db/schema";
 
 export default function Home() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -11,12 +10,16 @@ export default function Home() {
 
   useEffect(() => {
     console.log("fetching advocates...");
-    fetch("/api/advocates").then((response) => {
-      response.json().then((jsonResponse) => {
-        setAdvocates(jsonResponse.data);
-        setFilteredAdvocates(jsonResponse.data);
+    try {
+      fetch("/api/advocates").then((response) => {
+        response.json().then((jsonResponse) => {
+          setAdvocates(jsonResponse.data);
+          setFilteredAdvocates(jsonResponse.data);
+        });
       });
-    });
+    } catch (e) {
+      console.error("Failed to fetch advocates", e);
+    }
   }, []);
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {

@@ -6,7 +6,7 @@ export interface Advocate {
   lastName: string;
   city: string;
   degree: (typeof degreeValues)[number];
-  specialties: (typeof specialtyValues)[number][];
+  specialties: string[];
   yearsOfExperience: number;
   phoneNumber: string;
 }
