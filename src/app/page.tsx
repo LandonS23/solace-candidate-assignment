@@ -1,10 +1,11 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Advocate } from "@/types";
 import SolaceLogo from "./solace.svg";
 import Image from "next/image";
 import AdvocateTable from "./AdvocateTable";
+import useDebounce from "./hooks/UseDebounce";
 
 export default function Home() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -14,28 +15,34 @@ export default function Home() {
   const [totalPages, setTotalPages] = useState(0);
   const [advocates, setAdvocates] = useState<Advocate[]>([]);
   const [filteredAdvocates, setFilteredAdvocates] = useState<Advocate[]>([]);
+  const [sortedCol, setSortedCol] = useState("");
+  const [order, setOrder] = useState("asc");
 
-  useEffect(() => {
-    console.log("fetching advocates...");
+  useDebounce(
+    () => {
+      console.log("fetching advocates...");
 
-    fetch(
-      `/api/advocates?search=${searchTerm}&pageSize=${pageSize}&page=${page}`
-    )
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error(response.statusText);
-        }
-        response.json().then((jsonResponse) => {
-          setAdvocates(jsonResponse.data);
-          setFilteredAdvocates(jsonResponse.data);
-          setTotal(jsonResponse.total);
-          setTotalPages(jsonResponse.numPages);
+      fetch(
+        `/api/advocates?search=${searchTerm}&pageSize=${pageSize}&page=${page}&dir=${order}&col=${sortedCol}`
+      )
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error(response.statusText);
+          }
+          response.json().then((jsonResponse) => {
+            setAdvocates(jsonResponse.data);
+            setFilteredAdvocates(jsonResponse.data);
+            setTotal(jsonResponse.total);
+            setTotalPages(jsonResponse.numPages);
+          });
+        })
+        .catch((e) => {
+          console.error("Failed to fetch advocates", e);
         });
-      })
-      .catch((e) => {
-        console.error("Failed to fetch advocates", e);
-      });
-  }, [page, pageSize, searchTerm]);
+    },
+    [page, pageSize, searchTerm, sortedCol, order],
+    300
+  );
 
   const searchTermChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPage(1);
@@ -59,6 +66,22 @@ export default function Home() {
     setSearchTerm("");
     setPage(1);
     setFilteredAdvocates(advocates);
+  };
+
+  const onHeaderClick = (key: keyof Advocate) => {
+    console.log(sortedCol, key, order);
+    if (sortedCol === key) {
+      if (order === "asc") {
+        setOrder("desc");
+      } else if (order === "desc") {
+        setOrder("");
+      } else {
+        setOrder("asc");
+      }
+    } else {
+      setOrder("asc");
+    }
+    setSortedCol(key);
   };
 
   return (
@@ -117,7 +140,10 @@ export default function Home() {
 
       {filteredAdvocates.length > 0 ? (
         <div className="inline-block min-w-full shadow rounded-lg overflow-hidden">
-          <AdvocateTable advocates={filteredAdvocates} />
+          <AdvocateTable
+            advocates={filteredAdvocates}
+            onHeaderClick={onHeaderClick}
+          />
 
           <div className="px-5 py-5 bg-white border-t flex flex-col xs:flex-row items-center xs:justify-between          ">
             <span className="text-xs xs:text-sm text-gray-900">

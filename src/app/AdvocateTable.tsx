@@ -4,19 +4,23 @@ import { formatPhoneNumber } from "./utils";
 
 export default function AdvocateTable({
   advocates,
+  onHeaderClick,
 }: {
   advocates: Advocate[];
+  onHeaderClick: (key: keyof Advocate) => void;
 }) {
   return (
     <table>
       <thead>
         <tr>
-          <th>First Name</th>
-          <th>Last Name</th>
-          <th>City</th>
-          <th>Degree</th>
+          <th onClick={() => onHeaderClick("firstName")}>First Name</th>
+          <th onClick={() => onHeaderClick("lastName")}>Last Name</th>
+          <th onClick={() => onHeaderClick("city")}>City</th>
+          <th onClick={() => onHeaderClick("degree")}>Degree</th>
           <th>Specialties</th>
-          <th>Years of Experience</th>
+          <th onClick={() => onHeaderClick("yearsOfExperience")}>
+            Years of Experience
+          </th>
           <th>Phone Number</th>
         </tr>
       </thead>
