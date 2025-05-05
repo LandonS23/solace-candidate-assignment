@@ -145,7 +145,7 @@ export default function Home() {
             onHeaderClick={onHeaderClick}
           />
 
-          <div className="px-5 py-5 bg-white border-t flex flex-col xs:flex-row items-center xs:justify-between          ">
+          <div className="px-5 py-5 bg-white border-t flex flex-col xs:flex-row items-center xs:justify-between">
             <span className="text-xs xs:text-sm text-gray-900">
               Showing {(page - 1) * pageSize + 1} to{" "}
               {Math.min(page * pageSize, total)} of {total} Entries
