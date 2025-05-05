@@ -69,7 +69,6 @@ export default function Home() {
   };
 
   const onHeaderClick = (key: keyof Advocate) => {
-    console.log(sortedCol, key, order);
     if (sortedCol === key) {
       if (order === "asc") {
         setOrder("desc");
@@ -142,6 +141,8 @@ export default function Home() {
         <div className="inline-block min-w-full shadow rounded-lg overflow-hidden">
           <AdvocateTable
             advocates={filteredAdvocates}
+            sortedCol={sortedCol}
+            order={order}
             onHeaderClick={onHeaderClick}
           />
 

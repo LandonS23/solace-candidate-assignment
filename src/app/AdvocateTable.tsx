@@ -1,27 +1,70 @@
 "use client";
 import { Advocate } from "@/types";
 import { formatPhoneNumber } from "./utils";
+import { useMemo } from "react";
 
 export default function AdvocateTable({
   advocates,
+  sortedCol,
+  order,
   onHeaderClick,
 }: {
   advocates: Advocate[];
+  sortedCol: string;
+  order: string;
   onHeaderClick: (key: keyof Advocate) => void;
 }) {
+  const icon = useMemo(() => {
+    if (order) {
+      return order === "asc" ? "↑" : "↓";
+    } else {
+      return null;
+    }
+  }, [order]);
+
+  const headers: { key: keyof Advocate; display: string }[] = [
+    {
+      key: "firstName",
+      display: "First Name",
+    },
+    {
+      key: "lastName",
+      display: "Last Name",
+    },
+    {
+      key: "city",
+      display: "City",
+    },
+    {
+      key: "degree",
+      display: "Degree",
+    },
+    {
+      key: "specialties",
+      display: "Specialties",
+    },
+    {
+      key: "yearsOfExperience",
+      display: "Years of Experience",
+    },
+    {
+      key: "phoneNumber",
+      display: "Phone Number",
+    },
+  ];
+
   return (
     <table>
       <thead>
         <tr>
-          <th onClick={() => onHeaderClick("firstName")}>First Name</th>
-          <th onClick={() => onHeaderClick("lastName")}>Last Name</th>
-          <th onClick={() => onHeaderClick("city")}>City</th>
-          <th onClick={() => onHeaderClick("degree")}>Degree</th>
-          <th>Specialties</th>
-          <th onClick={() => onHeaderClick("yearsOfExperience")}>
-            Years of Experience
-          </th>
-          <th>Phone Number</th>
+          {headers.map((header) => {
+            return (
+              <th key={header.key} onClick={() => onHeaderClick(header.key)}>
+                {header.display}
+                {sortedCol === header.key && icon}
+              </th>
+            );
+          })}
         </tr>
       </thead>
       <tbody>
